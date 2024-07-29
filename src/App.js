@@ -2,9 +2,8 @@ import "./App.scss";
 import Header from "./components/Header";
 
 import Container from "react-bootstrap/Container";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Routes, Route, Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
 import AppRoutes from "./routes/AppRoutes";

@@ -6,18 +6,25 @@ import { ToastContainer, toast } from "react-toastify";
 
 const ModalAddNew = (props) => {
   const { show, handleClose, handleUpdateTable } = props;
-  const [name, setName] = useState("");
-  const [job, setJob] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSaveUser = async () => {
-    let res = await postCreateUser(name, job);
+    let res = await postCreateUser(first_name, last_name, email);
     console.log(res);
     if (res && res.id) {
       handleClose();
-      setName("");
-      setJob("");
+      setFirstName("");
+      setFirstName("");
+      setEmail("");
       toast.success("Create user success");
-      handleUpdateTable({ first_name: name, id: res.id });
+      handleUpdateTable({
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        id: res.id,
+      });
     } else {
       toast.error("Create user fail");
     }
@@ -41,21 +48,30 @@ const ModalAddNew = (props) => {
           <Modal.Body>
             <div className="body-add-new">
               <div className="mb-3">
-                <label className="form-label">Name</label>
+                <label className="form-label">First name</label>
                 <input
                   type="text"
                   class="form-control"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  value={first_name}
+                  onChange={(event) => setFirstName(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Last name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value={last_name}
+                  onChange={(event) => setLastName(event.target.value)}
                 />
               </div>
               <div class="mb-3">
-                <label className="form-label">Job</label>
+                <label className="form-label">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   className="form-control"
-                  value={job}
-                  onChange={(event) => setJob(event.target.value)}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
             </div>

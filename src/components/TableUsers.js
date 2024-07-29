@@ -41,20 +41,21 @@ const TableUsers = (props) => {
     setListUsers([user, ...listUsers]);
   };
 
-  const handleEditUserFromModal = (user) => {
-    let cloneListUsers = _.cloneDeep(listUsers);
-    let index = listUsers.findIndex((item) => item.id === user.id);
-    cloneListUsers[index].first_name = user.first_name;
-    setListUsers(cloneListUsers);
-    console.log(listUsers, cloneListUsers);
-    console.log("check index", index);
-  };
-
-  // const handleEditUserFromModal = (updatedUser) => {
-  //   setListUsers((prevUsers) =>
-  //     prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
-  //   );
+  // const handleEditUserFromModal = (user) => {
+  //   let cloneListUsers = _.cloneDeep(listUsers);
+  //   let index = listUsers.findIndex((item) => item.id === user.id);
+  //   cloneListUsers[index].first_name = user.first_name;
+  //   setListUsers(cloneListUsers);
+  //   console.log(listUsers, cloneListUsers);
+  //   console.log("check index", index);
   // };
+
+  const handleEditUserFromModal = (updatedUser) => {
+    setListUsers((prevUsers) =>
+      prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
+    console.log("updatedUser", updatedUser);
+  };
 
   useEffect(() => {
     getUsers(1);
@@ -62,7 +63,7 @@ const TableUsers = (props) => {
 
   const getUsers = async (page) => {
     let res = await fetchAllUser(page);
-    console.log("check new res", res);
+
     if (res && res.data) {
       setListUsers(res.data);
       setTotalUsers(res.total);

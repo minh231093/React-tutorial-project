@@ -6,25 +6,46 @@ import { ToastContainer, toast } from "react-toastify";
 
 const ModalEditUser = (props) => {
   const { show, handleClose, dataUserEdit, handleEditUserFromModal } = props;
-  const [name, setName] = useState("");
-  const [job, setJob] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleEditUser = async () => {
-    let res = await putUpdateUser(dataUserEdit.id, name, job);
-    if (res && res.updateAt) {
-      handleEditUserFromModal({
-        id: dataUserEdit.id,
-        first_name: name,
-      });
-      handleClose();
-      toast.success("User updated successfully!");
+    try {
+      let res = await putUpdateUser(
+        dataUserEdit.id,
+        first_name,
+        last_name,
+        email
+      );
+      console.log("API response:", res);
+      if (res) {
+        handleEditUserFromModal({
+          id: dataUserEdit.id,
+          first_name,
+          last_name,
+          email,
+        });
+        handleClose();
+        toast.success("User updated successfully!");
+      } else {
+        toast.error("Failed to update user. Please try again.");
+        console.log("dataUserEdit.id", dataUserEdit.id);
+        console.log("fname", dataUserEdit.first_name);
+        console.log("lname", dataUserEdit.last_name);
+        console.log("mail", dataUserEdit.email);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      toast.error("An error occurred. Please try again.");
     }
-    console.log("check res", res);
   };
 
   useEffect(() => {
     if (show) {
-      setName(dataUserEdit.first_name);
+      setFirstName(dataUserEdit.first_name);
+      setLastName(dataUserEdit.last_name);
+      setEmail(dataUserEdit.email);
     }
   }, [dataUserEdit, show]);
 
@@ -46,21 +67,30 @@ const ModalEditUser = (props) => {
           <Modal.Body>
             <div className="body-add-new">
               <div className="mb-3">
-                <label className="form-label">Name</label>
+                <label className="form-label">First Name</label>
                 <input
                   type="text"
                   class="form-control"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  value={first_name}
+                  onChange={(event) => setFirstName(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value={last_name}
+                  onChange={(event) => setLastName(event.target.value)}
                 />
               </div>
               <div class="mb-3">
-                <label className="form-label">Job</label>
+                <label className="form-label">Email</label>
                 <input
                   type="text"
                   className="form-control"
-                  value={job}
-                  onChange={(event) => setJob(event.target.value)}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
             </div>
